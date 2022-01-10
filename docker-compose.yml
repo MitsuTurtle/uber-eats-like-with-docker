@@ -9,15 +9,15 @@ services:
       MYSQL_ROOT_PASSWORD: password
     volumes:
       - mysql-data:/var/lib/mysql
-  api:
+  backend:
     build:
-      context: ./api/
+      context: ./backend/
       dockerfile: Dockerfile
     command: /bin/sh -c "rm -f /myapp/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     image: rails:dev
     volumes:
-      - ./api:/myapp
-      - ./api/vendor/bundle:/myapp/vendor/bundle
+      - ./backend:/myapp
+      - ./backend/vendor/bundle:/myapp/vendor/bundle
     environment:
       TZ: Asia/Tokyo
       RAILS_ENV: development
