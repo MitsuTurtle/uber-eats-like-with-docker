@@ -9,11 +9,14 @@ services:
       MYSQL_ROOT_PASSWORD: password
     volumes:
       - mysql-data:/var/lib/mysql
+    ports:
+      - '3306:3306'
   backend:
     build:
       context: ./backend/
       dockerfile: Dockerfile
     command: /bin/sh -c "rm -f /myapp/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    # command: sh -c "yarn && bundle exec rails server -b 0.0.0.0 -p 3000"
     image: rails:dev
     volumes:
       - ./backend:/myapp

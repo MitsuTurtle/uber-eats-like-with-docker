@@ -5,6 +5,8 @@
 https://qiita.com/dl10yr/items/b76969da1c2c33595a4a
 https://usconsort.com/docker-env-vol1/
 https://qiita.com/watarut17/items/9e0e1db436223075381f
+https://alterbo.jp/blog/ryu3-2106/
+https://teratail.com/questions/283808
 
 ### .gitignore の統合
 
