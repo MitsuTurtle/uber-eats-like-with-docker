@@ -1,4 +1,5 @@
-FROM ruby:3.0
+FROM ruby:3.0.3
+# RUN apk update && apk add curl bash
 RUN curl https://deb.nodesource.com/setup_12.x | bash
 RUN curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
