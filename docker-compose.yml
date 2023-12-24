@@ -10,7 +10,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
-      - '3306:3306'
+      - 3306:3306
   backend:
     build:
       context: ./backend/
@@ -37,7 +37,7 @@ services:
       - ./frontend:/usr/src/app
     command: sh -c "yarn start"
     ports:
-      - '3001:3000'
+      - 3001:3000
 volumes:
   mysql-data:
     driver: local
