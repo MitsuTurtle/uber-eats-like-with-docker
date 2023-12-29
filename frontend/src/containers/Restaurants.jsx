@@ -1,6 +1,6 @@
-import React, { Fragment, useReducer, useEffect } from 'react';
-import styled from 'styled-components';
+import { Fragment, useEffect, useReducer } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 // components
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -68,15 +68,17 @@ export const Restaurants = () => {
 
   useEffect(() => {
     dispatch({ type: restaurantsActionTypes.FETCHING });
-    fetchRestaurants().then((data) =>
+    fetchRestaurants().then((data) => {
       dispatch({
         type: restaurantsActionTypes.FETCH_SUCCESS,
         payload: {
           restaurants: data.restaurants,
         },
       })
+    }
     );
   }, []);
+
 
   return (
     <Fragment>
