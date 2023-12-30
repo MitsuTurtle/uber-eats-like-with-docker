@@ -7,7 +7,9 @@ module Api
         restaurant = Restaurant.find(params[:restaurant_id])
         foods = restaurant.foods
 
-        render json: foods, status: :ok
+        render json: {
+          foods: foods
+        }, status: :ok
       end
     end
   end

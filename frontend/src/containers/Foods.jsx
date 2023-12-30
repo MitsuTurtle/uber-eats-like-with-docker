@@ -1,16 +1,34 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useReducer } from 'react';
+
+import { foodsActionTypes, initialState as foodsInitialState, foodsReducer } from '../reducers/foods';
 
 // apis
 import { fetchFoods } from 'apis/foods';
 
+import { REQUEST_STATE } from 'constants';
+
 export const Foods = ({ match }) => {
+  const [foodsState, dispatch] = useReducer(foodsReducer, foodsInitialState);
   useEffect(() => {
-    fetchFoods(match.params.restaurantsId).then((data) => console.log(data));
+    dispatch({ type: foodsActionTypes.FETCHING });
+    fetchFoods(match.params.restaurantsId).then((data) => {
+      dispatch({
+        type: foodsActionTypes.FETCH_SUCCESS,
+        payload: {
+          foods: data.foods,
+        },
+      });
+    });
   }, [match.params.restaurantsId]);
   return (
     <Fragment>
-      フード一覧
-      <p>restaurantsIdは {match.params.restaurantsId} です</p>
+      {foodsState.fetchState === REQUEST_STATE.LOADING ? (
+        <Fragment>
+          <p>ロード中...</p>
+        </Fragment>
+      ) : (
+        foodsState.foodsList.map((food) => <div key={food.id}>{food.name}</div>)
+      )}
     </Fragment>
   );
 };
