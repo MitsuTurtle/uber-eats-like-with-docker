@@ -1,6 +1,12 @@
 import { Fragment, useEffect, useReducer, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { NewOrderConfirmDialog } from '../components/NewOrderConfirmDialog';
+
+import { postLineFoods, replaceLineFoods } from '../apis/line_foods';
+
+import { HTTP_STATUS_CODE } from '../constants';
 
 // components
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -51,17 +57,16 @@ const ItemWrapper = styled.div`
   margin: 16px;
 `;
 
-const submitOrder = () => {
-  // 後ほど仮注文のAPIを実装します
-  console.log('登録ボタンが押された！');
-};
-
 export const Foods = ({ match }) => {
+  const history = useHistory();
   const [foodsState, dispatch] = useReducer(foodsReducer, foodsInitialState);
   const initialState = {
     isOpenOrderDialog: false,
     selectedFood: null,
     selectedFoodCount: 1,
+    isOpenNewOrderDialog: false,
+    existingRestaurantName: '',
+    newRestaurantName: '',
   };
   const [state, setState] = useState(initialState);
   useEffect(() => {
@@ -75,6 +80,33 @@ export const Foods = ({ match }) => {
       });
     });
   }, [match.params.restaurantsId]);
+  const submitOrder = () => {
+    postLineFoods({
+      foodId: state.selectedFood.id,
+      count: state.selectedFoodCount,
+    })
+      .then(() => history.push('/orders'))
+      .catch((e) => {
+        if (e.response.status === HTTP_STATUS_CODE.NOT_ACCEPTABLE) {
+          setState({
+            ...state,
+            isOpenOrderDialog: false,
+            isOpenNewOrderDialog: true,
+            existingRestaurantName: e.response.data.existing_restaurant,
+            newRestaurantName: e.response.data.new_restaurant,
+          });
+        } else {
+          throw e;
+        }
+      });
+  };
+  const replaceOrder = () => {
+    replaceLineFoods({
+      foodId: state.selectedFood.id,
+      count: state.selectedFoodCount,
+    }).then(() => history.push('/orders'));
+  };
+
   return (
     <Fragment>
       <HeaderWrapper>
@@ -144,6 +176,7 @@ export const Foods = ({ match }) => {
           }
         />
       )}
+      {state.isOpenNewOrderDialog && <NewOrderConfirmDialog isOpen={state.isOpenNewOrderDialog} onClose={() => setState({ ...state, isOpenNewOrderDialog: false })} existingRestaurantName={state.existingRestaurantName} newRestaurantName={state.newRestaurantName} onClickSubmit={() => replaceOrder()} />}
     </Fragment>
   );
 };

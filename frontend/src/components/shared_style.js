@@ -5,12 +5,12 @@ import { COLORS } from '../style_constants';
 
 // ボタンの元となるコンポーネント
 export const BaseButton = styled.button`
-  cursor: pointer,
+  cursor: pointer;
   :hover {
     opacity: 0.7;
   }
   :focus {
-    outline:0;
+    outline: 0;
   }
 `;
 
