@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useReducer, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-
 import { NewOrderConfirmDialog } from '../components/NewOrderConfirmDialog';
+import { HeaderWrapper, MainLogoImage } from '../components/StyledHeader';
 
 import { postLineFoods, replaceLineFoods } from '../apis/line_foods';
 
@@ -28,22 +28,12 @@ import MainLogo from '../images/logo.png';
 import { REQUEST_STATE } from '../constants';
 import { COLORS } from '../style_constants';
 
-const HeaderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 32px;
-`;
-
 const BagIconWrapper = styled.div`
   padding-top: 24px;
 `;
 
 const ColoredBagIcon = styled(LocalMallIcon)`
   color: ${COLORS.MAIN};
-`;
-
-const MainLogoImage = styled.img`
-  height: 90px;
 `;
 
 const FoodsList = styled.div`
